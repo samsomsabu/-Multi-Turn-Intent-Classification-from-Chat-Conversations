@@ -1,148 +1,127 @@
-Great! Here's a complete `README.md` tailored to your **Multi-Turn Intent Classification from Chat Conversations** project. It clearly explains the task, your approach, and the challenges with zero-shot classification:
+🧠 Multi-Turn Intent Classification from Chat Conversations
+This project implements a multi-turn intent classification system to identify user intent from chat-style conversations (e.g., WhatsApp threads). Developed as a machine learning assignment, it explores both fine-tuned classification and zero-shot learning approaches for classifying user intents based on multi-turn dialogues.
 
----
+📌 Objective
+The goal is to classify the final intent of the user from a multi-turn conversation into one of the following categories:
 
-```markdown
-# 🧠 Multi-Turn Intent Classification from Chat Conversations
+Book Appointment
+Product Inquiry
+Pricing Negotiation
+Support Request
+Follow-Up
 
-This project implements a **multi-turn intent classification system** designed to identify user intent from chat-like conversations (e.g., WhatsApp-style threads). It was developed as part of a machine learning assignment and explores both **fine-tuned classification** and **zero-shot learning** approaches.
 
----
-
-## 📌 Objective
-
-Classify the final **intent of the user** from a conversation involving multiple back-and-forth messages.
-
-### 🎯 Target Intents
-- Book Appointment
-- Product Inquiry
-- Pricing Negotiation
-- Support Request
-- Follow-Up
-
----
-
-## 🗂️ Project Structure
-
-```
-
+🗂️ Project Structure
 ├── data/
-│   ├── sample\_conversations.json       # Sample training conversations
-│   ├── test\_conversations.json         # Unlabeled test conversations
-│   ├── ground\_truth.csv                # Ground truth labels for test set
-│   └── train.csv                       # Final dataset for training
+│   ├── sample_conversations.json       # Sample training conversations
+│   ├── test_conversations.json         # Unlabeled test conversations
+│   ├── ground_truth.csv                # Ground truth labels for test set
+│   ├── train.csv                       # Processed dataset for training
 ├── model/
-│   └── distilbert/                     # Fine-tuned model and label encoder
-├── main.py                             # Zero-shot intent predictor
-├── predict.py                          # Fine-tuned model inference
-├── prepare\_dataset.py                  # Converts data to training format
-├── train\_classifier.py                 # Fine-tunes DistilBERT classifier
-├── evaluate.py                         # Generates evaluation report
-├── rationale.py                        # Rationale generator for predictions
-├── zero\_shot\_model.py                  # Zero-shot classification with BART
-├── preprocessing.py                    # Extracts final user message
+│   └── distilbert/                     # Fine-tuned DistilBERT model and label encoder
+├── main.py                             # Zero-shot intent prediction script
+├── predict.py                          # Inference with fine-tuned model
+├── prepare_dataset.py                  # Data preprocessing for training
+├── train_classifier.py                 # Fine-tuning script for DistilBERT
+├── evaluate.py                         # Evaluation script for model performance
+├── rationale.py                        # Generates rationales for predictions
+├── zero_shot_model.py                  # Zero-shot classification using BART
+├── preprocessing.py                    # Extracts final user message from conversations
 ├── requirements.txt                    # Python dependencies
 
-````
 
----
+🧪 Approach
+1. Fine-Tuned DistilBERT Classifier
 
-## 🧪 Methods Tried
+Model: distilbert-base-uncased fine-tuned on a small labeled dataset.
+Methodology:
+Extracted final user messages from multi-turn conversations.
+Labeled messages with corresponding intents.
+Used HuggingFace’s Trainer API for training.
 
-### ✅ 1. Fine-Tuning DistilBERT
 
-- Used a supervised approach by fine-tuning `distilbert-base-uncased` on a small labeled dataset.
-- Final user messages were extracted from multi-turn chats and labeled with corresponding intent.
-- Trained using HuggingFace’s `Trainer` API.
-- Achieved **accurate predictions** on known intents (especially with 5–10 examples per class).
+Performance: Achieved reliable results with 5–10 examples per intent class.
 
-### ❌ 2. Zero-Shot Classification (BART-Large-MNLI)
+2. Zero-Shot Classification with BART
 
-We also tested a zero-shot setup using Hugging Face’s `facebook/bart-large-mnli`:
-
-```python
-candidate_labels = [
+Model: facebook/bart-large-mnli.
+Candidate Labels:candidate_labels = [
     "Book Appointment",
     "Product Inquiry",
     "Pricing Negotiation",
     "Support Request",
     "Follow-Up"
 ]
-````
-
-However, the model **failed to reliably classify** the correct intent. For example:
-
-* "Please book the villa..." was classified as `"Inquire"` instead of `"Book Appointment"`.
-* Overall performance was weak due to the nuanced and domain-specific phrasing in multi-turn conversations.
-
-🔍 **Conclusion**: Zero-shot worked well only when message wording exactly matched label semantics.
-
----
-
-## 🚀 How to Run
-
-1. **Clone the repo**:
-
-   ```bash
-   git clone https://github.com/samsomsabu/Multi-Turn-Intent-Classification-from-Chat-Conversations.git
-   cd Multi-Turn-Intent-Classification-from-Chat-Conversations
-   ```
-
-2. **Set up the environment**:
-
-   ```bash
-   python -m venv zenv
-   zenv\Scripts\activate   # On Windows
-   pip install -r requirements.txt
-   ```
-
-3. **Prepare data**:
-
-   ```bash
-   python prepare_dataset.py
-   ```
-
-4. **Train the classifier**:
-
-   ```bash
-   python train_classifier.py
-   ```
-
-5. **Run predictions** (Fine-tuned model):
-
-   ```bash
-   python predict.py
-   ```
-
-6. **Run zero-shot predictions**:
-
-   ```bash
-   python main.py
-   ```
-
-7. **Evaluate results**:
-
-   ```bash
-   python evaluate.py
-   ```
-
----
-
-## 🔁 Next Steps
-
-* Increase dataset size for better generalization
-* Fine-tune on a domain-specific BERT model (e.g., `bert-base-uncased`)
-* Try prompt-based LLM classification (e.g., GPT-4-turbo via API)
-* Build a simple Streamlit or CLI interface
-
----
-
-## 🙋 Author
-
-👤 **Samson Sabu**
-Email: \[[samsonsabu6@gmail.com](mailto:samsonsabu6@gmail.com)]
-GitHub: [samsomsabu](https://github.com/samsomsabu)
-
----
 
 
+Challenges:
+Struggled with nuanced, domain-specific phrasing in conversations.
+Example: Classified "Please book the villa..." as "Inquire" instead of "Book Appointment".
+Conclusion: Zero-shot approach performed poorly unless message wording closely matched label semantics.
+
+
+
+
+🚀 Getting Started
+Prerequisites
+
+Python 3.8+
+Virtual environment (recommended)
+Dependencies listed in requirements.txt
+
+Installation
+
+Clone the repository:
+git clone https://github.com/samsomsabu/Multi-Turn-Intent-Classification-from-Chat-Conversations.git
+cd Multi-Turn-Intent-Classification-from-Chat-Conversations
+
+
+Set up the virtual environment:
+python -m venv zenv
+source zenv/bin/activate  # On Linux/Mac
+zenv\Scripts\activate     # On Windows
+pip install -r requirements.txt
+
+
+
+Usage
+
+Prepare the dataset:
+python prepare_dataset.py
+
+
+Train the DistilBERT classifier:
+python train_classifier.py
+
+
+Run predictions with the fine-tuned model:
+python predict.py
+
+
+Run zero-shot predictions:
+python main.py
+
+
+Evaluate model performance:
+python evaluate.py
+
+
+
+
+🔁 Next Steps
+
+Expand the dataset for improved model generalization.
+Experiment with domain-specific BERT models (e.g., bert-base-uncased).
+Explore prompt-based classification using LLMs (e.g., GPT-4-turbo via API).
+Develop a user-friendly interface using Streamlit or a CLI.
+
+
+🙋 Author
+Samson Sabu  
+
+Email: samsonsabu6@gmail.com  
+GitHub: samsomsabu
+
+
+📜 License
+This project is licensed under the MIT License. See the LICENSE file for details.
