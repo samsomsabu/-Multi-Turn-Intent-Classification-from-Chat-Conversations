@@ -134,6 +134,3 @@ The goal is to classify the **final intent of the user** from a multi-turn conve
 
 ---
 
-## 📜 License
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
