@@ -1,171 +1,148 @@
+Great! Here's a complete `README.md` tailored to your **Multi-Turn Intent Classification from Chat Conversations** project. It clearly explains the task, your approach, and the challenges with zero-shot classification:
+
+---
+
+```markdown
 # 🧠 Multi-Turn Intent Classification from Chat Conversations
 
-## 📌 Assignment Objective
-
-The goal of this assignment was to build a system that classifies the **final intent** of a user from a multi-turn, WhatsApp-style conversation. Specifically, the task involves:
-
-* **Extracting user utterances** from conversation histories.
-* **Classifying the final intent** using a machine learning model.
-* **Providing rationale** for the predicted intent.
-* **Exporting predictions** in both JSON and CSV formats.
+This project implements a **multi-turn intent classification system** designed to identify user intent from chat-like conversations (e.g., WhatsApp-style threads). It was developed as part of a machine learning assignment and explores both **fine-tuned classification** and **zero-shot learning** approaches.
 
 ---
 
-## ✅ Requirements
+## 📌 Objective
 
-* Build an **intent classifier** using:
+Classify the final **intent of the user** from a conversation involving multiple back-and-forth messages.
 
-  * Fine-tuned transformer models (e.g., DistilBERT)
-  * Zero-shot classification (using `facebook/bart-large-mnli`)
-* Predict intent for each conversation in `test_conversations.json`
-* Provide human-readable **rationale** for the prediction.
-* Output files:
-
-  * `predictions.json`
-  * `predictions.csv`
-  * `zero_shot_predictions.json` (if applicable)
-* Evaluate performance using ground truth via `evaluate.py`
+### 🎯 Target Intents
+- Book Appointment
+- Product Inquiry
+- Pricing Negotiation
+- Support Request
+- Follow-Up
 
 ---
 
-## 🛠️ What We Implemented
-
-### 1. **Supervised Model (DistilBERT)**
-
-* Preprocessed multi-turn conversations by extracting **user messages**.
-* Created labeled training data (`train.csv`) with curated examples.
-* Fine-tuned a **DistilBERT** model for classification.
-* Used HuggingFace `Trainer` for training & evaluation.
-* Saved model, tokenizer, and label encoder.
-
-### 2. **Zero-Shot Classification (Baseline)**
-
-* Used `facebook/bart-large-mnli` via Hugging Face `pipeline`.
-* Defined candidate labels:
-
-  ```
-  "Book Appointment", "Product Inquiry", "Pricing Negotiation", 
-  "Support Request", "Follow-Up"
-  ```
-* Applied to unseen conversations (`test_conversations.json`) without retraining.
-
-### 3. **Rationale Generation**
-
-* Simple rule-based rationale generator that:
-
-  * Extracts user text
-  * Explains classification using keywords and label context
-
----
-
-## 📂 Directory Structure
+## 🗂️ Project Structure
 
 ```
-.
+
 ├── data/
-│   ├── train.csv
-│   ├── test_conversations.json
-│   └── ground_truth.csv
+│   ├── sample\_conversations.json       # Sample training conversations
+│   ├── test\_conversations.json         # Unlabeled test conversations
+│   ├── ground\_truth.csv                # Ground truth labels for test set
+│   └── train.csv                       # Final dataset for training
 ├── model/
-│   └── distilbert/ (fine-tuned model + tokenizer)
-├── logs/
-├── main.py                  # Zero-shot pipeline
-├── train_classifier.py      # Fine-tune DistilBERT
-├── predict.py               # Predict using trained classifier
-├── evaluate.py              # Compare predictions with ground truth
-├── rationale.py             # Generate rationale
-├── preprocessing.py         # Utility to extract user text
-├── zero_shot_model.py       # Zero-shot classifier logic
-└── predictions.json
-```
+│   └── distilbert/                     # Fine-tuned model and label encoder
+├── main.py                             # Zero-shot intent predictor
+├── predict.py                          # Fine-tuned model inference
+├── prepare\_dataset.py                  # Converts data to training format
+├── train\_classifier.py                 # Fine-tunes DistilBERT classifier
+├── evaluate.py                         # Generates evaluation report
+├── rationale.py                        # Rationale generator for predictions
+├── zero\_shot\_model.py                  # Zero-shot classification with BART
+├── preprocessing.py                    # Extracts final user message
+├── requirements.txt                    # Python dependencies
+
+````
 
 ---
 
-## 🧪 Observations
+## 🧪 Methods Tried
 
-### ✅ What Worked
+### ✅ 1. Fine-Tuning DistilBERT
 
-* `predict.py` (DistilBERT) successfully runs and produces output.
-* Zero-shot classifier loads and returns predictions.
+- Used a supervised approach by fine-tuning `distilbert-base-uncased` on a small labeled dataset.
+- Final user messages were extracted from multi-turn chats and labeled with corresponding intent.
+- Trained using HuggingFace’s `Trainer` API.
+- Achieved **accurate predictions** on known intents (especially with 5–10 examples per class).
 
-### ⚠️ Challenges Faced
+### ❌ 2. Zero-Shot Classification (BART-Large-MNLI)
 
-* **Zero-shot predictions were often inaccurate** due to:
+We also tested a zero-shot setup using Hugging Face’s `facebook/bart-large-mnli`:
 
-  * Lack of context handling across turns.
-  * Ambiguity in short messages.
-* **Small dataset (5 examples)** led to poor generalization in fine-tuning.
-* Some **labels were ambiguous or overlapping** (e.g., “Follow-Up” vs. “Support Request”).
-
----
-
-## 🤖 Next Steps / Improvements
-
-* Add more **training samples** across all intents to improve fine-tuning.
-* Improve rationale generation using:
-
-  * LLM-based explanation (e.g., GPT-3.5-turbo)
-  * Rule-based keyword matching with examples
-* Train on **context-aware models** (e.g., Dialogue BERT, T5)
-* Apply **ensemble approach**: zero-shot + fine-tuned + rules.
-
----
-
-## 📝 How to Run
-
-### 1. Setup Environment
-
-```bash
-pip install -r requirements.txt
-```
-
-### 2. Train Classifier
-
-```bash
-python prepare_dataset.py
-python train_classifier.py
-```
-
-### 3. Predict Using Fine-Tuned Model
-
-```bash
-python predict.py
-```
-
-### 4. Predict Using Zero-Shot Model
-
-```bash
-python main.py
-```
-
-### 5. Evaluate
-
-```bash
-python evaluate.py
-```
-
----
-
-## 📊 Example Output
-
-**predictions.json**
-
-```json
-[
-  {
-    "conversation_id": "conv_004",
-    "predicted_intent": "Book Appointment"
-  }
+```python
+candidate_labels = [
+    "Book Appointment",
+    "Product Inquiry",
+    "Pricing Negotiation",
+    "Support Request",
+    "Follow-Up"
 ]
-```
+````
 
-**zero\_shot\_predictions.json**
+However, the model **failed to reliably classify** the correct intent. For example:
 
-```json
-[
-  {
-    "conversation_id": "conv_003",
-    "predicted_intent": "Product Inquiry",
-    "rationale": "The intent was classified as 'Product Inquiry' because..."
-  }
-]
+* "Please book the villa..." was classified as `"Inquire"` instead of `"Book Appointment"`.
+* Overall performance was weak due to the nuanced and domain-specific phrasing in multi-turn conversations.
+
+🔍 **Conclusion**: Zero-shot worked well only when message wording exactly matched label semantics.
+
+---
+
+## 🚀 How to Run
+
+1. **Clone the repo**:
+
+   ```bash
+   git clone https://github.com/samsomsabu/Multi-Turn-Intent-Classification-from-Chat-Conversations.git
+   cd Multi-Turn-Intent-Classification-from-Chat-Conversations
+   ```
+
+2. **Set up the environment**:
+
+   ```bash
+   python -m venv zenv
+   zenv\Scripts\activate   # On Windows
+   pip install -r requirements.txt
+   ```
+
+3. **Prepare data**:
+
+   ```bash
+   python prepare_dataset.py
+   ```
+
+4. **Train the classifier**:
+
+   ```bash
+   python train_classifier.py
+   ```
+
+5. **Run predictions** (Fine-tuned model):
+
+   ```bash
+   python predict.py
+   ```
+
+6. **Run zero-shot predictions**:
+
+   ```bash
+   python main.py
+   ```
+
+7. **Evaluate results**:
+
+   ```bash
+   python evaluate.py
+   ```
+
+---
+
+## 🔁 Next Steps
+
+* Increase dataset size for better generalization
+* Fine-tune on a domain-specific BERT model (e.g., `bert-base-uncased`)
+* Try prompt-based LLM classification (e.g., GPT-4-turbo via API)
+* Build a simple Streamlit or CLI interface
+
+---
+
+## 🙋 Author
+
+👤 **Samson Sabu**
+Email: \[[samsonsabu6@gmail.com](mailto:samsonsabu6@gmail.com)]
+GitHub: [samsomsabu](https://github.com/samsomsabu)
+
+---
+
+
