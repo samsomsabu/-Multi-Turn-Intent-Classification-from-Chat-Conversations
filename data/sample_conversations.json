@@ -1,0 +1,43 @@
+[
+  {
+    "conversation_id": "conv_001",
+    "messages": [
+      { "sender": "user", "text": "Hi, I'm looking for a villa near Goa for the weekend." },
+      { "sender": "agent", "text": "Sure, we have several options. What dates are you looking at?" },
+      { "sender": "user", "text": "From 5th to 7th August. Also, I need a private pool." },
+      { "sender": "agent", "text": "Got it. I’ll share some properties shortly." }
+    ]
+  },
+  {
+    "conversation_id": "conv_002",
+    "messages": [
+      { "sender": "user", "text": "Is the beach house still available?" },
+      { "sender": "agent", "text": "Yes, it is. Would you like to proceed with the booking?" },
+      { "sender": "user", "text": "No, just checking for now." }
+    ]
+  },
+  {
+    "conversation_id": "conv_003",
+    "messages": [
+      { "sender": "user", "text": "Can you tell me more about the forest cabin stay?" },
+      { "sender": "agent", "text": "Of course. It’s located in Coorg and is perfect for a peaceful getaway." },
+      { "sender": "user", "text": "Nice. Is it pet-friendly?" },
+      { "sender": "agent", "text": "Yes, pets are allowed." }
+    ]
+  },
+  {
+    "conversation_id": "conv_004",
+    "messages": [
+      { "sender": "user", "text": "Please book the villa in Alibaug for the 12th to 14th August." },
+      { "sender": "agent", "text": "Booking confirmed. You’ll receive an email shortly." }
+    ]
+  },
+  {
+    "conversation_id": "conv_005",
+    "messages": [
+      { "sender": "user", "text": "Is there any place available for a team outing near Bangalore?" },
+      { "sender": "agent", "text": "Yes, there’s a farm stay option. Shall I share more details?" },
+      { "sender": "user", "text": "Yes please." }
+    ]
+  }
+]

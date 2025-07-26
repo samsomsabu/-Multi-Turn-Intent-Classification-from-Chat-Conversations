@@ -1,0 +1,7 @@
+[
+  {
+    "conversation_id": "conv_001",
+    "predicted_intent": "Follow-Up",
+    "rationale": "The intent was classified as 'Follow-Up' because the user's message includes keywords and context consistent with that intent."
+  }
+]

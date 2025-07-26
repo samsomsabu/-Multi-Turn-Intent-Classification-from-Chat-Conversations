@@ -1,0 +1,6 @@
+conversation_id,text,label
+conv_001,"Hi, I'm looking for a villa near Goa for the weekend. From 5th to 7th August. Also, I need a private pool.",Book Appointment
+conv_002,"Is the beach house still available? No, just checking for now.",Product Inquiry
+conv_003,Can you tell me more about the forest cabin stay? Nice. Is it pet-friendly?,Product Inquiry
+conv_004,Please book the villa in Alibaug for the 12th to 14th August.,Book Appointment
+conv_005,Is there any place available for a team outing near Bangalore? Yes please.,Product Inquiry

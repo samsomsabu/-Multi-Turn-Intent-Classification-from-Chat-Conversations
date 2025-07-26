@@ -1,0 +1,6 @@
+conversation_id,intent
+conv_001,Book Appointment
+conv_002,Pricing Negotiation
+conv_003,Follow-Up
+conv_004,Support Request
+conv_005,Product Inquiry
